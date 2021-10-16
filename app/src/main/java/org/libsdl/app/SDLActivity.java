@@ -1832,7 +1832,6 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     // Key events
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-
         int deviceId = event.getDeviceId();
         int source = event.getSource();
 
