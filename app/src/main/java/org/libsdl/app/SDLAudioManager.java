@@ -8,8 +8,7 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.util.Log;
 
-public class SDLAudioManager
-{
+public class SDLAudioManager {
     protected static final String TAG = "SDLAudio";
 
     protected static AudioTrack mAudioTrack;
@@ -24,14 +23,14 @@ public class SDLAudioManager
 
     protected static String getAudioFormatString(int audioFormat) {
         switch (audioFormat) {
-        case AudioFormat.ENCODING_PCM_8BIT:
-            return "8-bit";
-        case AudioFormat.ENCODING_PCM_16BIT:
-            return "16-bit";
-        case AudioFormat.ENCODING_PCM_FLOAT:
-            return "float";
-        default:
-            return Integer.toString(audioFormat);
+            case AudioFormat.ENCODING_PCM_8BIT:
+                return "8-bit";
+            case AudioFormat.ENCODING_PCM_16BIT:
+                return "16-bit";
+            case AudioFormat.ENCODING_PCM_FLOAT:
+                return "float";
+            default:
+                return Integer.toString(audioFormat);
         }
     }
 
@@ -60,75 +59,74 @@ public class SDLAudioManager
                 audioFormat = AudioFormat.ENCODING_PCM_16BIT;
             }
         }
-        switch (audioFormat)
-        {
-        case AudioFormat.ENCODING_PCM_8BIT:
-            sampleSize = 1;
-            break;
-        case AudioFormat.ENCODING_PCM_16BIT:
-            sampleSize = 2;
-            break;
-        case AudioFormat.ENCODING_PCM_FLOAT:
-            sampleSize = 4;
-            break;
-        default:
-            Log.v(TAG, "Requested format " + audioFormat + ", getting ENCODING_PCM_16BIT");
-            audioFormat = AudioFormat.ENCODING_PCM_16BIT;
-            sampleSize = 2;
-            break;
+        switch (audioFormat) {
+            case AudioFormat.ENCODING_PCM_8BIT:
+                sampleSize = 1;
+                break;
+            case AudioFormat.ENCODING_PCM_16BIT:
+                sampleSize = 2;
+                break;
+            case AudioFormat.ENCODING_PCM_FLOAT:
+                sampleSize = 4;
+                break;
+            default:
+                Log.v(TAG, "Requested format " + audioFormat + ", getting ENCODING_PCM_16BIT");
+                audioFormat = AudioFormat.ENCODING_PCM_16BIT;
+                sampleSize = 2;
+                break;
         }
 
         if (isCapture) {
             switch (desiredChannels) {
-            case 1:
-                channelConfig = AudioFormat.CHANNEL_IN_MONO;
-                break;
-            case 2:
-                channelConfig = AudioFormat.CHANNEL_IN_STEREO;
-                break;
-            default:
-                Log.v(TAG, "Requested " + desiredChannels + " channels, getting stereo");
-                desiredChannels = 2;
-                channelConfig = AudioFormat.CHANNEL_IN_STEREO;
-                break;
+                case 1:
+                    channelConfig = AudioFormat.CHANNEL_IN_MONO;
+                    break;
+                case 2:
+                    channelConfig = AudioFormat.CHANNEL_IN_STEREO;
+                    break;
+                default:
+                    Log.v(TAG, "Requested " + desiredChannels + " channels, getting stereo");
+                    desiredChannels = 2;
+                    channelConfig = AudioFormat.CHANNEL_IN_STEREO;
+                    break;
             }
         } else {
             switch (desiredChannels) {
-            case 1:
-                channelConfig = AudioFormat.CHANNEL_OUT_MONO;
-                break;
-            case 2:
-                channelConfig = AudioFormat.CHANNEL_OUT_STEREO;
-                break;
-            case 3:
-                channelConfig = AudioFormat.CHANNEL_OUT_STEREO | AudioFormat.CHANNEL_OUT_FRONT_CENTER;
-                break;
-            case 4:
-                channelConfig = AudioFormat.CHANNEL_OUT_QUAD;
-                break;
-            case 5:
-                channelConfig = AudioFormat.CHANNEL_OUT_QUAD | AudioFormat.CHANNEL_OUT_FRONT_CENTER;
-                break;
-            case 6:
-                channelConfig = AudioFormat.CHANNEL_OUT_5POINT1;
-                break;
-            case 7:
-                channelConfig = AudioFormat.CHANNEL_OUT_5POINT1 | AudioFormat.CHANNEL_OUT_BACK_CENTER;
-                break;
-            case 8:
-                if (Build.VERSION.SDK_INT >= 23) {
-                    channelConfig = AudioFormat.CHANNEL_OUT_7POINT1_SURROUND;
-                } else {
-                    Log.v(TAG, "Requested " + desiredChannels + " channels, getting 5.1 surround");
-                    desiredChannels = 6;
+                case 1:
+                    channelConfig = AudioFormat.CHANNEL_OUT_MONO;
+                    break;
+                case 2:
+                    channelConfig = AudioFormat.CHANNEL_OUT_STEREO;
+                    break;
+                case 3:
+                    channelConfig = AudioFormat.CHANNEL_OUT_STEREO | AudioFormat.CHANNEL_OUT_FRONT_CENTER;
+                    break;
+                case 4:
+                    channelConfig = AudioFormat.CHANNEL_OUT_QUAD;
+                    break;
+                case 5:
+                    channelConfig = AudioFormat.CHANNEL_OUT_QUAD | AudioFormat.CHANNEL_OUT_FRONT_CENTER;
+                    break;
+                case 6:
                     channelConfig = AudioFormat.CHANNEL_OUT_5POINT1;
-                }
-                break;
-            default:
-                Log.v(TAG, "Requested " + desiredChannels + " channels, getting stereo");
-                desiredChannels = 2;
-                channelConfig = AudioFormat.CHANNEL_OUT_STEREO;
-                break;
+                    break;
+                case 7:
+                    channelConfig = AudioFormat.CHANNEL_OUT_5POINT1 | AudioFormat.CHANNEL_OUT_BACK_CENTER;
+                    break;
+                case 8:
+                    if (Build.VERSION.SDK_INT >= 23) {
+                        channelConfig = AudioFormat.CHANNEL_OUT_7POINT1_SURROUND;
+                    } else {
+                        Log.v(TAG, "Requested " + desiredChannels + " channels, getting 5.1 surround");
+                        desiredChannels = 6;
+                        channelConfig = AudioFormat.CHANNEL_OUT_5POINT1;
+                    }
+                    break;
+                default:
+                    Log.v(TAG, "Requested " + desiredChannels + " channels, getting stereo");
+                    desiredChannels = 2;
+                    channelConfig = AudioFormat.CHANNEL_OUT_STEREO;
+                    break;
             }
 
 /*
@@ -250,14 +248,14 @@ public class SDLAudioManager
             return;
         }
 
-        for (int i = 0; i < buffer.length;) {
+        for (int i = 0; i < buffer.length; ) {
             int result = mAudioTrack.write(buffer, i, buffer.length - i, AudioTrack.WRITE_BLOCKING);
             if (result > 0) {
                 i += result;
             } else if (result == 0) {
                 try {
                     Thread.sleep(1);
-                } catch(InterruptedException e) {
+                } catch (InterruptedException e) {
                     // Nom nom
                 }
             } else {
@@ -276,14 +274,14 @@ public class SDLAudioManager
             return;
         }
 
-        for (int i = 0; i < buffer.length;) {
+        for (int i = 0; i < buffer.length; ) {
             int result = mAudioTrack.write(buffer, i, buffer.length - i);
             if (result > 0) {
                 i += result;
             } else if (result == 0) {
                 try {
                     Thread.sleep(1);
-                } catch(InterruptedException e) {
+                } catch (InterruptedException e) {
                     // Nom nom
                 }
             } else {
@@ -309,7 +307,7 @@ public class SDLAudioManager
             } else if (result == 0) {
                 try {
                     Thread.sleep(1);
-                } catch(InterruptedException e) {
+                } catch (InterruptedException e) {
                     // Nom nom
                 }
             } else {
@@ -326,12 +324,16 @@ public class SDLAudioManager
         return open(true, sampleRate, audioFormat, desiredChannels, desiredFrames);
     }
 
-    /** This method is called by SDL using JNI. */
+    /**
+     * This method is called by SDL using JNI.
+     */
     public static int captureReadFloatBuffer(float[] buffer, boolean blocking) {
         return mAudioRecord.read(buffer, 0, buffer.length, blocking ? AudioRecord.READ_BLOCKING : AudioRecord.READ_NON_BLOCKING);
     }
 
-    /** This method is called by SDL using JNI. */
+    /**
+     * This method is called by SDL using JNI.
+     */
     public static int captureReadShortBuffer(short[] buffer, boolean blocking) {
         if (Build.VERSION.SDK_INT < 23) {
             return mAudioRecord.read(buffer, 0, buffer.length);
@@ -340,7 +342,9 @@ public class SDLAudioManager
         }
     }
 
-    /** This method is called by SDL using JNI. */
+    /**
+     * This method is called by SDL using JNI.
+     */
     public static int captureReadByteBuffer(byte[] buffer, boolean blocking) {
         if (Build.VERSION.SDK_INT < 23) {
             return mAudioRecord.read(buffer, 0, buffer.length);
@@ -349,7 +353,9 @@ public class SDLAudioManager
         }
     }
 
-    /** This method is called by SDL using JNI. */
+    /**
+     * This method is called by SDL using JNI.
+     */
     public static void audioClose() {
         if (mAudioTrack != null) {
             mAudioTrack.stop();
@@ -358,7 +364,9 @@ public class SDLAudioManager
         }
     }
 
-    /** This method is called by SDL using JNI. */
+    /**
+     * This method is called by SDL using JNI.
+     */
     public static void captureClose() {
         if (mAudioRecord != null) {
             mAudioRecord.stop();
@@ -367,7 +375,9 @@ public class SDLAudioManager
         }
     }
 
-    /** This method is called by SDL using JNI. */
+    /**
+     * This method is called by SDL using JNI.
+     */
     public static void audioSetThreadPriority(boolean iscapture, int device_id) {
         try {
 

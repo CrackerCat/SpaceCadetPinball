@@ -1,10 +1,5 @@
 package org.libsdl.app;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import android.content.Context;
 import android.os.Build;
 import android.os.VibrationEffect;
@@ -15,9 +10,13 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
-public class SDLControllerManager
-{
+
+public class SDLControllerManager {
 
     public static native int nativeSetupJNI();
 
@@ -25,13 +24,20 @@ public class SDLControllerManager
                                                int vendor_id, int product_id,
                                                boolean is_accelerometer, int button_mask,
                                                int naxes, int nhats, int nballs);
+
     public static native int nativeRemoveJoystick(int device_id);
+
     public static native int nativeAddHaptic(int device_id, String name);
+
     public static native int nativeRemoveHaptic(int device_id);
+
     public static native int onNativePadDown(int device_id, int keycode);
+
     public static native int onNativePadUp(int device_id, int keycode);
+
     public static native void onNativeJoy(int device_id, int axis,
                                           float value);
+
     public static native void onNativeHat(int device_id, int hat_id,
                                           int x, int y);
 
@@ -87,8 +93,7 @@ public class SDLControllerManager
     /**
      * This method is called by SDL using JNI.
      */
-    public static void hapticStop(int device_id)
-    {
+    public static void hapticStop(int device_id) {
         mHapticHandler.stop(device_id);
     }
 
@@ -127,6 +132,7 @@ class SDLJoystickHandler {
 
     /**
      * Handles given MotionEvent.
+     *
      * @param event the event to be handled.
      * @return if given event was processed.
      */
@@ -151,6 +157,7 @@ class SDLJoystickHandler_API16 extends SDLJoystickHandler {
         public ArrayList<InputDevice.MotionRange> axes;
         public ArrayList<InputDevice.MotionRange> hats;
     }
+
     static class RangeComparator implements Comparator<InputDevice.MotionRange> {
         @Override
         public int compare(InputDevice.MotionRange arg0, InputDevice.MotionRange arg1) {
@@ -210,7 +217,7 @@ class SDLJoystickHandler_API16 extends SDLJoystickHandler {
                     mJoysticks.add(joystick);
                     SDLControllerManager.nativeAddJoystick(joystick.device_id, joystick.name, joystick.desc,
                             getVendorId(joystickDevice), getProductId(joystickDevice), false,
-                            getButtonMask(joystickDevice), joystick.axes.size(), joystick.hats.size()/2, 0);
+                            getButtonMask(joystickDevice), joystick.axes.size(), joystick.hats.size() / 2, 0);
                 }
             }
         }
@@ -287,12 +294,15 @@ class SDLJoystickHandler_API16 extends SDLJoystickHandler {
 
         return joystickDevice.getName();
     }
+
     public int getProductId(InputDevice joystickDevice) {
         return 0;
     }
+
     public int getVendorId(InputDevice joystickDevice) {
         return 0;
     }
+
     public int getButtonMask(InputDevice joystickDevice) {
         return -1;
     }
@@ -313,86 +323,86 @@ class SDLJoystickHandler_API19 extends SDLJoystickHandler_API16 {
     @Override
     public int getButtonMask(InputDevice joystickDevice) {
         int button_mask = 0;
-        int[] keys = new int[] {
-            KeyEvent.KEYCODE_BUTTON_A,
-            KeyEvent.KEYCODE_BUTTON_B,
-            KeyEvent.KEYCODE_BUTTON_X,
-            KeyEvent.KEYCODE_BUTTON_Y,
-            KeyEvent.KEYCODE_BACK,
-            KeyEvent.KEYCODE_BUTTON_MODE,
-            KeyEvent.KEYCODE_BUTTON_START,
-            KeyEvent.KEYCODE_BUTTON_THUMBL,
-            KeyEvent.KEYCODE_BUTTON_THUMBR,
-            KeyEvent.KEYCODE_BUTTON_L1,
-            KeyEvent.KEYCODE_BUTTON_R1,
-            KeyEvent.KEYCODE_DPAD_UP,
-            KeyEvent.KEYCODE_DPAD_DOWN,
-            KeyEvent.KEYCODE_DPAD_LEFT,
-            KeyEvent.KEYCODE_DPAD_RIGHT,
-            KeyEvent.KEYCODE_BUTTON_SELECT,
-            KeyEvent.KEYCODE_DPAD_CENTER,
+        int[] keys = new int[]{
+                KeyEvent.KEYCODE_BUTTON_A,
+                KeyEvent.KEYCODE_BUTTON_B,
+                KeyEvent.KEYCODE_BUTTON_X,
+                KeyEvent.KEYCODE_BUTTON_Y,
+                KeyEvent.KEYCODE_BACK,
+                KeyEvent.KEYCODE_BUTTON_MODE,
+                KeyEvent.KEYCODE_BUTTON_START,
+                KeyEvent.KEYCODE_BUTTON_THUMBL,
+                KeyEvent.KEYCODE_BUTTON_THUMBR,
+                KeyEvent.KEYCODE_BUTTON_L1,
+                KeyEvent.KEYCODE_BUTTON_R1,
+                KeyEvent.KEYCODE_DPAD_UP,
+                KeyEvent.KEYCODE_DPAD_DOWN,
+                KeyEvent.KEYCODE_DPAD_LEFT,
+                KeyEvent.KEYCODE_DPAD_RIGHT,
+                KeyEvent.KEYCODE_BUTTON_SELECT,
+                KeyEvent.KEYCODE_DPAD_CENTER,
 
-            // These don't map into any SDL controller buttons directly
-            KeyEvent.KEYCODE_BUTTON_L2,
-            KeyEvent.KEYCODE_BUTTON_R2,
-            KeyEvent.KEYCODE_BUTTON_C,
-            KeyEvent.KEYCODE_BUTTON_Z,
-            KeyEvent.KEYCODE_BUTTON_1,
-            KeyEvent.KEYCODE_BUTTON_2,
-            KeyEvent.KEYCODE_BUTTON_3,
-            KeyEvent.KEYCODE_BUTTON_4,
-            KeyEvent.KEYCODE_BUTTON_5,
-            KeyEvent.KEYCODE_BUTTON_6,
-            KeyEvent.KEYCODE_BUTTON_7,
-            KeyEvent.KEYCODE_BUTTON_8,
-            KeyEvent.KEYCODE_BUTTON_9,
-            KeyEvent.KEYCODE_BUTTON_10,
-            KeyEvent.KEYCODE_BUTTON_11,
-            KeyEvent.KEYCODE_BUTTON_12,
-            KeyEvent.KEYCODE_BUTTON_13,
-            KeyEvent.KEYCODE_BUTTON_14,
-            KeyEvent.KEYCODE_BUTTON_15,
-            KeyEvent.KEYCODE_BUTTON_16,
+                // These don't map into any SDL controller buttons directly
+                KeyEvent.KEYCODE_BUTTON_L2,
+                KeyEvent.KEYCODE_BUTTON_R2,
+                KeyEvent.KEYCODE_BUTTON_C,
+                KeyEvent.KEYCODE_BUTTON_Z,
+                KeyEvent.KEYCODE_BUTTON_1,
+                KeyEvent.KEYCODE_BUTTON_2,
+                KeyEvent.KEYCODE_BUTTON_3,
+                KeyEvent.KEYCODE_BUTTON_4,
+                KeyEvent.KEYCODE_BUTTON_5,
+                KeyEvent.KEYCODE_BUTTON_6,
+                KeyEvent.KEYCODE_BUTTON_7,
+                KeyEvent.KEYCODE_BUTTON_8,
+                KeyEvent.KEYCODE_BUTTON_9,
+                KeyEvent.KEYCODE_BUTTON_10,
+                KeyEvent.KEYCODE_BUTTON_11,
+                KeyEvent.KEYCODE_BUTTON_12,
+                KeyEvent.KEYCODE_BUTTON_13,
+                KeyEvent.KEYCODE_BUTTON_14,
+                KeyEvent.KEYCODE_BUTTON_15,
+                KeyEvent.KEYCODE_BUTTON_16,
         };
-        int[] masks = new int[] {
-            (1 << 0),   // A -> A
-            (1 << 1),   // B -> B
-            (1 << 2),   // X -> X
-            (1 << 3),   // Y -> Y
-            (1 << 4),   // BACK -> BACK
-            (1 << 5),   // MODE -> GUIDE
-            (1 << 6),   // START -> START
-            (1 << 7),   // THUMBL -> LEFTSTICK
-            (1 << 8),   // THUMBR -> RIGHTSTICK
-            (1 << 9),   // L1 -> LEFTSHOULDER
-            (1 << 10),  // R1 -> RIGHTSHOULDER
-            (1 << 11),  // DPAD_UP -> DPAD_UP
-            (1 << 12),  // DPAD_DOWN -> DPAD_DOWN
-            (1 << 13),  // DPAD_LEFT -> DPAD_LEFT
-            (1 << 14),  // DPAD_RIGHT -> DPAD_RIGHT
-            (1 << 4),   // SELECT -> BACK
-            (1 << 0),   // DPAD_CENTER -> A
-            (1 << 15),  // L2 -> ??
-            (1 << 16),  // R2 -> ??
-            (1 << 17),  // C -> ??
-            (1 << 18),  // Z -> ??
-            (1 << 20),  // 1 -> ??
-            (1 << 21),  // 2 -> ??
-            (1 << 22),  // 3 -> ??
-            (1 << 23),  // 4 -> ??
-            (1 << 24),  // 5 -> ??
-            (1 << 25),  // 6 -> ??
-            (1 << 26),  // 7 -> ??
-            (1 << 27),  // 8 -> ??
-            (1 << 28),  // 9 -> ??
-            (1 << 29),  // 10 -> ??
-            (1 << 30),  // 11 -> ??
-            (1 << 31),  // 12 -> ??
-            // We're out of room...
-            0xFFFFFFFF,  // 13 -> ??
-            0xFFFFFFFF,  // 14 -> ??
-            0xFFFFFFFF,  // 15 -> ??
-            0xFFFFFFFF,  // 16 -> ??
+        int[] masks = new int[]{
+                (1 << 0),   // A -> A
+                (1 << 1),   // B -> B
+                (1 << 2),   // X -> X
+                (1 << 3),   // Y -> Y
+                (1 << 4),   // BACK -> BACK
+                (1 << 5),   // MODE -> GUIDE
+                (1 << 6),   // START -> START
+                (1 << 7),   // THUMBL -> LEFTSTICK
+                (1 << 8),   // THUMBR -> RIGHTSTICK
+                (1 << 9),   // L1 -> LEFTSHOULDER
+                (1 << 10),  // R1 -> RIGHTSHOULDER
+                (1 << 11),  // DPAD_UP -> DPAD_UP
+                (1 << 12),  // DPAD_DOWN -> DPAD_DOWN
+                (1 << 13),  // DPAD_LEFT -> DPAD_LEFT
+                (1 << 14),  // DPAD_RIGHT -> DPAD_RIGHT
+                (1 << 4),   // SELECT -> BACK
+                (1 << 0),   // DPAD_CENTER -> A
+                (1 << 15),  // L2 -> ??
+                (1 << 16),  // R2 -> ??
+                (1 << 17),  // C -> ??
+                (1 << 18),  // Z -> ??
+                (1 << 20),  // 1 -> ??
+                (1 << 21),  // 2 -> ??
+                (1 << 22),  // 3 -> ??
+                (1 << 23),  // 4 -> ??
+                (1 << 24),  // 5 -> ??
+                (1 << 25),  // 6 -> ??
+                (1 << 26),  // 7 -> ??
+                (1 << 27),  // 8 -> ??
+                (1 << 28),  // 9 -> ??
+                (1 << 29),  // 10 -> ??
+                (1 << 30),  // 11 -> ??
+                (1 << 31),  // 12 -> ??
+                // We're out of room...
+                0xFFFFFFFF,  // 13 -> ??
+                0xFFFFFFFF,  // 14 -> ??
+                0xFFFFFFFF,  // 15 -> ??
+                0xFFFFFFFF,  // 16 -> ??
         };
         boolean[] has_keys = joystickDevice.hasKeys(keys);
         for (int i = 0; i < keys.length; ++i) {
@@ -426,8 +436,7 @@ class SDLHapticHandler_API26 extends SDLHapticHandler {
             }
             try {
                 haptic.vib.vibrate(VibrationEffect.createOneShot(length, vibeValue));
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // Fall back to the generic method, which uses DEFAULT_AMPLITUDE, but works even if
                 // something went horribly wrong with the Android 8.0 APIs.
                 haptic.vib.vibrate(length);
@@ -558,7 +567,7 @@ class SDLGenericMotionListener_API12 implements View.OnGenericMotionListener {
         float x, y;
         int action;
 
-        switch ( event.getSource() ) {
+        switch (event.getSource()) {
             case InputDevice.SOURCE_JOYSTICK:
             case InputDevice.SOURCE_GAMEPAD:
             case InputDevice.SOURCE_DPAD:
@@ -605,8 +614,7 @@ class SDLGenericMotionListener_API12 implements View.OnGenericMotionListener {
         return false;
     }
 
-    public void reclaimRelativeMouseModeIfNeeded()
-    {
+    public void reclaimRelativeMouseModeIfNeeded() {
 
     }
 
@@ -689,14 +697,14 @@ class SDLGenericMotionListener_API26 extends SDLGenericMotionListener_API24 {
         float x, y;
         int action;
 
-        switch ( event.getSource() ) {
+        switch (event.getSource()) {
             case InputDevice.SOURCE_JOYSTICK:
             case InputDevice.SOURCE_GAMEPAD:
             case InputDevice.SOURCE_DPAD:
                 return SDLControllerManager.handleJoystickMotionEvent(event);
 
             case InputDevice.SOURCE_MOUSE:
-            // DeX desktop mouse cursor is a separate non-standard input type.
+                // DeX desktop mouse cursor is a separate non-standard input type.
             case InputDevice.SOURCE_MOUSE | InputDevice.SOURCE_TOUCHSCREEN:
                 action = event.getActionMasked();
                 switch (action) {
@@ -771,8 +779,7 @@ class SDLGenericMotionListener_API26 extends SDLGenericMotionListener_API24 {
     }
 
     @Override
-    public void reclaimRelativeMouseModeIfNeeded()
-    {
+    public void reclaimRelativeMouseModeIfNeeded() {
         if (mRelativeModeEnabled && !SDLActivity.isDeXMode()) {
             SDLActivity.getContentView().requestPointerCapture();
         }

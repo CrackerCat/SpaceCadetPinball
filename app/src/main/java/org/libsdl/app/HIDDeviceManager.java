@@ -7,8 +7,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
-import android.os.Build;
-import android.util.Log;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,13 +14,17 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.hardware.usb.*;
+import android.hardware.usb.UsbConstants;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbInterface;
+import android.hardware.usb.UsbManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class HIDDeviceManager {
@@ -50,9 +52,9 @@ public class HIDDeviceManager {
         }
     }
 
-    private Context mContext;
-    private HashMap<Integer, HIDDevice> mDevicesById = new HashMap<Integer, HIDDevice>();
-    private HashMap<BluetoothDevice, HIDDeviceBLESteamController> mBluetoothDevices = new HashMap<BluetoothDevice, HIDDeviceBLESteamController>();
+    private final Context mContext;
+    private final HashMap<Integer, HIDDevice> mDevicesById = new HashMap<Integer, HIDDevice>();
+    private final HashMap<BluetoothDevice, HIDDeviceBLESteamController> mBluetoothDevices = new HashMap<BluetoothDevice, HIDDeviceBLESteamController>();
     private int mNextDeviceId = 0;
     private SharedPreferences mSharedPreferences = null;
     private boolean mIsChromebook = false;
@@ -121,11 +123,10 @@ public class HIDDeviceManager {
                     try {
                         // If our context is an activity, exit rather than crashing when we can't
                         // call our native functions.
-                        Activity activity = (Activity)context;
-        
+                        Activity activity = (Activity) context;
+
                         activity.finish();
-                    }
-                    catch (ClassCastException cce) {
+                    } catch (ClassCastException cce) {
                         // Context wasn't an activity, there's nothing we can do.  Give up and return.
                     }
                 }
@@ -134,7 +135,7 @@ public class HIDDeviceManager {
 
             return;
         }
-        
+
         HIDDeviceRegisterCallback();
 
         mSharedPreferences = mContext.getSharedPreferences("hidapi", Context.MODE_PRIVATE);
@@ -173,7 +174,7 @@ public class HIDDeviceManager {
     }
 
     private void initializeUSB() {
-        mUsbManager = (UsbManager)mContext.getSystemService(Context.USB_SERVICE);
+        mUsbManager = (UsbManager) mContext.getSystemService(Context.USB_SERVICE);
 
         /*
         // Logging
@@ -246,10 +247,7 @@ public class HIDDeviceManager {
         if (usbInterface.getInterfaceClass() == UsbConstants.USB_CLASS_HID) {
             return true;
         }
-        if (isXbox360Controller(usbDevice, usbInterface) || isXboxOneController(usbDevice, usbInterface)) {
-            return true;
-        }
-        return false;
+        return isXbox360Controller(usbDevice, usbInterface) || isXboxOneController(usbDevice, usbInterface);
     }
 
     private boolean isXbox360Controller(UsbDevice usbDevice, UsbInterface usbInterface) {
@@ -257,34 +255,34 @@ public class HIDDeviceManager {
         final int XB360_IFACE_PROTOCOL = 1; // Wired
         final int XB360W_IFACE_PROTOCOL = 129; // Wireless
         final int[] SUPPORTED_VENDORS = {
-            0x0079, // GPD Win 2
-            0x044f, // Thrustmaster
-            0x045e, // Microsoft
-            0x046d, // Logitech
-            0x056e, // Elecom
-            0x06a3, // Saitek
-            0x0738, // Mad Catz
-            0x07ff, // Mad Catz
-            0x0e6f, // PDP
-            0x0f0d, // Hori
-            0x1038, // SteelSeries
-            0x11c9, // Nacon
-            0x12ab, // Unknown
-            0x1430, // RedOctane
-            0x146b, // BigBen
-            0x1532, // Razer Sabertooth
-            0x15e4, // Numark
-            0x162e, // Joytech
-            0x1689, // Razer Onza
-            0x1949, // Lab126, Inc.
-            0x1bad, // Harmonix
-            0x24c6, // PowerA
+                0x0079, // GPD Win 2
+                0x044f, // Thrustmaster
+                0x045e, // Microsoft
+                0x046d, // Logitech
+                0x056e, // Elecom
+                0x06a3, // Saitek
+                0x0738, // Mad Catz
+                0x07ff, // Mad Catz
+                0x0e6f, // PDP
+                0x0f0d, // Hori
+                0x1038, // SteelSeries
+                0x11c9, // Nacon
+                0x12ab, // Unknown
+                0x1430, // RedOctane
+                0x146b, // BigBen
+                0x1532, // Razer Sabertooth
+                0x15e4, // Numark
+                0x162e, // Joytech
+                0x1689, // Razer Onza
+                0x1949, // Lab126, Inc.
+                0x1bad, // Harmonix
+                0x24c6, // PowerA
         };
 
         if (usbInterface.getInterfaceClass() == UsbConstants.USB_CLASS_VENDOR_SPEC &&
-            usbInterface.getInterfaceSubclass() == XB360_IFACE_SUBCLASS &&
-            (usbInterface.getInterfaceProtocol() == XB360_IFACE_PROTOCOL ||
-             usbInterface.getInterfaceProtocol() == XB360W_IFACE_PROTOCOL)) {
+                usbInterface.getInterfaceSubclass() == XB360_IFACE_SUBCLASS &&
+                (usbInterface.getInterfaceProtocol() == XB360_IFACE_PROTOCOL ||
+                        usbInterface.getInterfaceProtocol() == XB360W_IFACE_PROTOCOL)) {
             int vendor_id = usbDevice.getVendorId();
             for (int supportedVid : SUPPORTED_VENDORS) {
                 if (vendor_id == supportedVid) {
@@ -299,19 +297,19 @@ public class HIDDeviceManager {
         final int XB1_IFACE_SUBCLASS = 71;
         final int XB1_IFACE_PROTOCOL = 208;
         final int[] SUPPORTED_VENDORS = {
-            0x045e, // Microsoft
-            0x0738, // Mad Catz
-            0x0e6f, // PDP
-            0x0f0d, // Hori
-            0x1532, // Razer Wildcat
-            0x24c6, // PowerA
-            0x2e24, // Hyperkin
+                0x045e, // Microsoft
+                0x0738, // Mad Catz
+                0x0e6f, // PDP
+                0x0f0d, // Hori
+                0x1532, // Razer Wildcat
+                0x24c6, // PowerA
+                0x2e24, // Hyperkin
         };
 
         if (usbInterface.getId() == 0 &&
-            usbInterface.getInterfaceClass() == UsbConstants.USB_CLASS_VENDOR_SPEC &&
-            usbInterface.getInterfaceSubclass() == XB1_IFACE_SUBCLASS &&
-            usbInterface.getInterfaceProtocol() == XB1_IFACE_PROTOCOL) {
+                usbInterface.getInterfaceClass() == UsbConstants.USB_CLASS_VENDOR_SPEC &&
+                usbInterface.getInterfaceSubclass() == XB1_IFACE_SUBCLASS &&
+                usbInterface.getInterfaceProtocol() == XB1_IFACE_PROTOCOL) {
             int vendor_id = usbDevice.getVendorId();
             for (int supportedVid : SUPPORTED_VENDORS) {
                 if (vendor_id == supportedVid) {
@@ -390,7 +388,7 @@ public class HIDDeviceManager {
         }
 
         // Find bonded bluetooth controllers and create SteamControllers for them
-        mBluetoothManager = (BluetoothManager)mContext.getSystemService(Context.BLUETOOTH_SERVICE);
+        mBluetoothManager = (BluetoothManager) mContext.getSystemService(Context.BLUETOOTH_SERVICE);
         if (mBluetoothManager == null) {
             // This device doesn't support Bluetooth.
             return;
@@ -549,7 +547,7 @@ public class HIDDeviceManager {
             for (HIDDevice device : mDevicesById.values()) {
                 device.setFrozen(frozen);
             }
-        }        
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -673,13 +671,18 @@ public class HIDDeviceManager {
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private native void HIDDeviceRegisterCallback();
+
     private native void HIDDeviceReleaseCallback();
 
     native void HIDDeviceConnected(int deviceID, String identifier, int vendorId, int productId, String serial_number, int release_number, String manufacturer_string, String product_string, int interface_number, int interface_class, int interface_subclass, int interface_protocol);
+
     native void HIDDeviceOpenPending(int deviceID);
+
     native void HIDDeviceOpenResult(int deviceID, boolean opened);
+
     native void HIDDeviceDisconnected(int deviceID);
 
     native void HIDDeviceInputReport(int deviceID, byte[] report);
+
     native void HIDDeviceFeatureReport(int deviceID, byte[] report);
 }

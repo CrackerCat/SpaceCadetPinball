@@ -19,8 +19,11 @@ public class MainActivity extends SDLActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         File filesDir = getFilesDir();
+        copyAssets(filesDir);
         setDataPath(filesDir.getAbsolutePath() + "/");
+    }
 
+    private void copyAssets(File filesDir) {
         if (!new File(filesDir, "PINBALL.DAT").exists()) {
             AssetManager assetManager = getAssets();
             try {

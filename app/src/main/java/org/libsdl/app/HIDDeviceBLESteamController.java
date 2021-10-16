@@ -1,23 +1,20 @@
 package org.libsdl.app;
 
-import android.content.Context;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
+import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
-import android.bluetooth.BluetoothGattService;
+import android.content.Context;
 import android.hardware.usb.UsbDevice;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.os.*;
 
-//import com.android.internal.util.HexDump;
-
-import java.lang.Runnable;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.UUID;
@@ -26,17 +23,17 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
 
     private static final String TAG = "hidapi";
     private HIDDeviceManager mManager;
-    private BluetoothDevice mDevice;
-    private int mDeviceId;
+    private final BluetoothDevice mDevice;
+    private final int mDeviceId;
     private BluetoothGatt mGatt;
     private boolean mIsRegistered = false;
     private boolean mIsConnected = false;
     private boolean mIsChromebook = false;
     private boolean mIsReconnecting = false;
     private boolean mFrozen = false;
-    private LinkedList<GattOperation> mOperations;
+    private final LinkedList<GattOperation> mOperations;
     GattOperation mCurrentOperation = null;
-    private Handler mHandler;
+    private final Handler mHandler;
 
     private static final int TRANSPORT_AUTO = 0;
     private static final int TRANSPORT_BREDR = 1;
@@ -47,7 +44,7 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
     static public final UUID steamControllerService = UUID.fromString("100F6C32-1735-4313-B402-38567131E5F3");
     static public final UUID inputCharacteristic = UUID.fromString("100F6C33-1735-4313-B402-38567131E5F3");
     static public final UUID reportCharacteristic = UUID.fromString("100F6C34-1735-4313-B402-38567131E5F3");
-    static private final byte[] enterValveMode = new byte[] { (byte)0xC0, (byte)0x87, 0x03, 0x08, 0x07, 0x00 };
+    static private final byte[] enterValveMode = new byte[]{(byte) 0xC0, (byte) 0x87, 0x03, 0x08, 0x07, 0x00};
 
     static class GattOperation {
         private enum Operation {
@@ -209,7 +206,7 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
             return BluetoothProfile.STATE_DISCONNECTED;
         }
 
-        BluetoothManager btManager = (BluetoothManager)context.getSystemService(Context.BLUETOOTH_SERVICE);
+        BluetoothManager btManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
         if (btManager == null) {
             // This device doesn't support Bluetooth.  We should never be here, because how did
             // we instantiate a device to start with?
@@ -247,21 +244,18 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
                     mGatt.disconnect();
                     mGatt = connectGatt(false);
                     break;
-                }
-                else if (!isRegistered()) {
+                } else if (!isRegistered()) {
                     if (mGatt.getServices().size() > 0) {
                         Log.v(TAG, "Chromebook: We are connected to a controller, but never got our registration.  Trying to recover.");
                         probeService(this);
-                    }
-                    else {
+                    } else {
                         Log.v(TAG, "Chromebook: We are connected to a controller, but never discovered services.  Trying to recover.");
                         mIsReconnecting = true;
                         mGatt.disconnect();
                         mGatt = connectGatt(false);
                         break;
                     }
-                }
-                else {
+                } else {
                     Log.v(TAG, "Chromebook: We are connected, and registered.  Everything's good!");
                     return;
                 }
@@ -429,8 +423,7 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
                     }
                 });
             }
-        } 
-        else if (newState == 0) {
+        } else if (newState == 0) {
             mIsConnected = false;
         }
 
@@ -446,8 +439,7 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
                 mIsConnected = false;
                 gatt.disconnect();
                 mGatt = connectGatt(false);
-            }
-            else {
+            } else {
                 probeService(this);
             }
         }
@@ -479,7 +471,7 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
     }
 
     public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-    // Enable this for verbose logging of controller input reports
+        // Enable this for verbose logging of controller input reports
         //Log.v(TAG, "onCharacteristicChanged uuid=" + characteristic.getUuid() + " data=" + HexDump.dumpHexString(characteristic.getValue()));
 
         if (characteristic.getUuid().equals(inputCharacteristic) && !mFrozen) {
@@ -564,10 +556,10 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
         return "Steam Controller";
     }
 
-	@Override
+    @Override
     public UsbDevice getDevice() {
-		return null;
-	}
+        return null;
+    }
 
     @Override
     public boolean open() {

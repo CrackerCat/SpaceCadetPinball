@@ -3,8 +3,8 @@ package org.libsdl.app;
 import android.content.Context;
 
 /**
-    SDL library initialization
-*/
+ * SDL library initialization
+ */
 public class SDL {
 
     // This function should be called first and sets up the native code
