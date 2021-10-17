@@ -124,21 +124,6 @@ set(SOURCE_FILES
         SpaceCadetPinball/winmain.h
         SpaceCadetPinball/zdrv.cpp
         SpaceCadetPinball/zdrv.h
-        SpaceCadetPinball/imconfig.h
-        SpaceCadetPinball/imgui_internal.h
-        SpaceCadetPinball/imgui.cpp
-        SpaceCadetPinball/imgui.h
-        SpaceCadetPinball/imgui_sdl.cpp
-        SpaceCadetPinball/imgui_sdl.h
-        SpaceCadetPinball/imgui_draw.cpp
-        SpaceCadetPinball/imgui_widgets.cpp
-        SpaceCadetPinball/imgui_tables.cpp
-        SpaceCadetPinball/imgui_demo.cpp
-        SpaceCadetPinball/imgui_impl_sdl.cpp
-        SpaceCadetPinball/imgui_impl_sdl.h
-        SpaceCadetPinball/imstb_textedit.h
-        SpaceCadetPinball/imstb_rectpack.h
-        SpaceCadetPinball/imstb_truetype.h
         )
 
 add_library(spacecadetpinball SHARED ${SOURCE_FILES})

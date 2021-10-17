@@ -43,11 +43,9 @@ public class MainActivity extends SDLActivity {
         left.setOnTouchListener((v1, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 SDLActivity.onNativeKeyDown(KeyEvent.KEYCODE_Z);
-                return true;
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 SDLActivity.onNativeKeyUp(KeyEvent.KEYCODE_Z);
-                return true;
             }
             return false;
         });
@@ -55,11 +53,9 @@ public class MainActivity extends SDLActivity {
         right.setOnTouchListener((v1, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 SDLActivity.onNativeKeyDown(KeyEvent.KEYCODE_SLASH);
-                return true;
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 SDLActivity.onNativeKeyUp(KeyEvent.KEYCODE_SLASH);
-                return true;
             }
             return false;
         });
@@ -67,11 +63,9 @@ public class MainActivity extends SDLActivity {
         plunger.setOnTouchListener((v1, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 SDLActivity.onNativeKeyDown(KeyEvent.KEYCODE_SPACE);
-                return true;
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 SDLActivity.onNativeKeyUp(KeyEvent.KEYCODE_SPACE);
-                return true;
             }
             return false;
         });
