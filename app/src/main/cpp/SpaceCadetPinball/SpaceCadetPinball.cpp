@@ -6,25 +6,21 @@
 #include "winmain.h"
 #include <jni.h>
 
-int MainActual(LPCSTR lpCmdLine)
-{
-	// Todo: get rid of restart to change resolution.
-	int returnCode;
-	do
-	{
-		returnCode = winmain::WinMain(lpCmdLine);
-	}
-	while (winmain::RestartRequested());
-	return returnCode;
+int MainActual(LPCSTR lpCmdLine) {
+    // Todo: get rid of restart to change resolution.
+    int returnCode;
+    do {
+        returnCode = winmain::WinMain(lpCmdLine);
+    } while (winmain::RestartRequested());
+    return returnCode;
 }
 
-int main(int argc, char* argv[])
-{
-	std::string cmdLine;
-	for (int i = 1; i < argc; i++)
-		cmdLine += argv[i];
+int main(int argc, char *argv[]) {
+    std::string cmdLine;
+    for (int i = 1; i < argc; i++)
+        cmdLine += argv[i];
 
-	return MainActual(cmdLine.c_str());
+    return MainActual(cmdLine.c_str());
 }
 
 #if _WIN32
@@ -33,13 +29,15 @@ int main(int argc, char* argv[])
 // Windows subsystem main
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
-	return MainActual(lpCmdLine);
+    return MainActual(lpCmdLine);
 }
 #endif
 
 extern "C"
-JNIEXPORT void JNICALL Java_com_dualscreenstudios_spacecadetpinball_MainActivity_setDataPath(JNIEnv *env, jobject thiz, jstring data_path) {
-	winmain::BasePath = (char *) env->GetStringUTFChars(data_path, nullptr);
+JNIEXPORT void JNICALL
+Java_com_dualscreenstudios_spacecadetpinball_MainActivity_setDataPath(JNIEnv *env, jobject thiz,
+                                                                      jstring data_path) {
+    winmain::BasePath = (char *) env->GetStringUTFChars(data_path, nullptr);
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
