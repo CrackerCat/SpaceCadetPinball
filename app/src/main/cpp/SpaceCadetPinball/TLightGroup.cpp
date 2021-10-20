@@ -45,7 +45,7 @@ int TLightGroup::Message(int code, float value) {
             MessageField = playerPtr->MessageField;
             MessageField2 = playerPtr->MessageField2;
             Timer1Time = playerPtr->Timer1Time;
-            if (!(MessageField == 0))
+            if (MessageField != 0)
                 TimerExpired(0, this);
             break;
         }

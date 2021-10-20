@@ -2,7 +2,6 @@
 #include "zdrv.h"
 #include "winmain.h"
 
-
 zmap_header_type::zmap_header_type(int width, int height, int stride) {
     Resolution = 0;
     Width = width;

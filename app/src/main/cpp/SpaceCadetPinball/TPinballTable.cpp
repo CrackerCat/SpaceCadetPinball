@@ -11,7 +11,6 @@
 #include "TBlocker.h"
 #include "TBumper.h"
 #include "TComponentGroup.h"
-#include "TDemo.h"
 #include "TFlagSpinner.h"
 #include "TGate.h"
 #include "THole.h"
@@ -147,7 +146,7 @@ TPinballTable::TPinballTable() : TPinballComponent(nullptr, -1, false) {
                     new THole(this, groupIndex);
                     break;
                 case 1023:
-                    new TDemo(this, groupIndex);
+                    // Demo (removed)
                     break;
                 case 1024:
                     new TTripwire(this, groupIndex);
@@ -206,7 +205,7 @@ TPinballTable::~TPinballTable() {
     control::ClearLinks();
 }
 
-TPinballComponent *TPinballTable::find_component(LPCSTR componentName) {
+TPinballComponent *TPinballTable::find_component(const char *componentName) {
     for (auto component : ComponentList) {
         const char *groupName = component->GroupName;
         if (groupName && !strcmp(groupName, componentName)) {
@@ -286,7 +285,7 @@ void TPinballTable::port_draw() {
 }
 
 int TPinballTable::Message(int code, float value) {
-    LPSTR rc_text;
+    char *rc_text;
     switch (code) {
         case 1000:
             if (!TiltLockFlag) {
@@ -332,13 +331,8 @@ int TPinballTable::Message(int code, float value) {
             LightGroup->Message(34, 0.0);
             LightGroup->Message(20, 0.0);
             Plunger->Message(1016, 0.0);
-            if (Demo->ActiveFlag)
-                rc_text = pinball::get_rc_string(30, 0);
-            else
-                rc_text = pinball::get_rc_string(26, 0);
+            rc_text = pinball::get_rc_string(26, 0);
             pinball::InfoTextBox->Display(rc_text, -1.0);
-            if (Demo)
-                Demo->Message(1014, 0.0);
             break;
         case 1014:
             if (EndGameTimeoutTimer) {
@@ -413,10 +407,7 @@ int TPinballTable::Message(int code, float value) {
         case 1021: {
             if (PlayerCount <= 1) {
                 char *textboxText;
-                if (Demo->ActiveFlag)
-                    textboxText = pinball::get_rc_string(30, 0);
-                else
-                    textboxText = pinball::get_rc_string(26, 0);
+                textboxText = pinball::get_rc_string(26, 0);
                 pinball::InfoTextBox->Display(textboxText, -1.0);
                 break;
             }
@@ -455,28 +446,16 @@ int TPinballTable::Message(int code, float value) {
             char *textboxText = nullptr;
             switch (nextPlayer) {
                 case 0:
-                    if (Demo->ActiveFlag)
-                        textboxText = pinball::get_rc_string(30, 0);
-                    else
-                        textboxText = pinball::get_rc_string(26, 0);
+                    textboxText = pinball::get_rc_string(26, 0);
                     break;
                 case 1:
-                    if (Demo->ActiveFlag)
-                        textboxText = pinball::get_rc_string(31, 0);
-                    else
-                        textboxText = pinball::get_rc_string(27, 0);
+                    textboxText = pinball::get_rc_string(27, 0);
                     break;
                 case 2:
-                    if (Demo->ActiveFlag)
-                        textboxText = pinball::get_rc_string(32, 0);
-                    else
-                        textboxText = pinball::get_rc_string(28, 0);
+                    textboxText = pinball::get_rc_string(28, 0);
                     break;
                 case 3:
-                    if (Demo->ActiveFlag)
-                        textboxText = pinball::get_rc_string(33, 0);
-                    else
-                        textboxText = pinball::get_rc_string(29, 0);
+                    textboxText = pinball::get_rc_string(29, 0);
                     break;
                 default:
                     break;
@@ -542,8 +521,6 @@ void TPinballTable::EndGame_timeout(int timerId, void *caller) {
     for (auto component : table->ComponentList) {
         component->Message(1022, 0);
     }
-    if (table->Demo)
-        table->Demo->Message(1022, 0.0);
     control::handler(67, pinball::MissTextBox);
     pinball::InfoTextBox->Display(pinball::get_rc_string(24, 0), -1.0);
 }

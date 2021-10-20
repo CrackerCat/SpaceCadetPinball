@@ -9,9 +9,9 @@ class TPinballTable;
 class TPinballComponent;
 
 struct component_tag_base {
-    LPCSTR Name;
+    const char *Name;
 
-    component_tag_base(LPCSTR name) {
+    component_tag_base(const char *name) {
         Name = name;
     }
 
@@ -29,8 +29,8 @@ struct component_tag : component_tag_base {
                   "T must inherit from TPinballComponent");
     T *Component;
 
-    component_tag(LPCSTR name, TPinballComponent *component) : component_tag_base(name),
-                                                               Component(nullptr) {
+    component_tag(const char *name, TPinballComponent *component) : component_tag_base(name),
+                                                                    Component(nullptr) {
         component_tag::SetComponent(component);
     }
 

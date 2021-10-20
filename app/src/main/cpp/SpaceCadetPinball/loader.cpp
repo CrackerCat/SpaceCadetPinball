@@ -162,7 +162,7 @@ int loader::get_sound_id(int groupIndex) {
 }
 
 
-int loader::query_handle(LPCSTR lpString) {
+int loader::query_handle(const char *lpString) {
     return loader_table->record_labeled(lpString);
 }
 

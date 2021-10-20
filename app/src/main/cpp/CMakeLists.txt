@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10.2)
 set(CMAKE_CXX_STANDARD 11)
-project(spacecadetpinball)
+project(SpaceCadetPinball)
 
 set(SOURCE_FILES
         SpaceCadetPinball/control.cpp
@@ -53,8 +53,6 @@ set(SOURCE_FILES
         SpaceCadetPinball/TCollisionComponent.h
         SpaceCadetPinball/TComponentGroup.cpp
         SpaceCadetPinball/TComponentGroup.h
-        SpaceCadetPinball/TDemo.cpp
-        SpaceCadetPinball/TDemo.h
         SpaceCadetPinball/TDrain.cpp
         SpaceCadetPinball/TDrain.h
         SpaceCadetPinball/TEdgeBox.h
@@ -124,9 +122,10 @@ set(SOURCE_FILES
         SpaceCadetPinball/winmain.h
         SpaceCadetPinball/zdrv.cpp
         SpaceCadetPinball/zdrv.h
-        )
+        SpaceCadetPinballJNI.cpp
+        SpaceCadetPinballJNI.h)
 
-add_library(spacecadetpinball SHARED ${SOURCE_FILES})
+add_library(SpaceCadetPinball SHARED ${SOURCE_FILES})
 
 include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/SDL/include
@@ -136,4 +135,4 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/SDL_mixer)
 
 find_library(log-lib log)
 
-target_link_libraries(spacecadetpinball SDL2 SDL2_mixer ${log-lib})
+target_link_libraries(SpaceCadetPinball SDL2 SDL2_mixer ${log-lib})

@@ -88,17 +88,17 @@ public:
 
     static void uninit();
 
-    static int get_int(LPCSTR lpValueName, int defaultValue);
+    static int get_int(const char *lpValueName, int defaultValue);
 
-    static void set_int(LPCSTR lpValueName, int data);
+    static void set_int(const char *lpValueName, int data);
 
-    static std::string get_string(LPCSTR lpValueName, LPCSTR defaultValue);
+    static std::string get_string(const char *lpValueName, const char *defaultValue);
 
-    static void set_string(LPCSTR lpValueName, LPCSTR value);
+    static void set_string(const char *lpValueName, const char *value);
 
-    static float get_float(LPCSTR lpValueName, float defaultValue);
+    static float get_float(const char *lpValueName, float defaultValue);
 
-    static void set_float(LPCSTR lpValueName, float data);
+    static void set_float(const char *lpValueName, float data);
 
     static void GetInput(const std::string &rowName, GameInput (&defaultValues)[3]);
 

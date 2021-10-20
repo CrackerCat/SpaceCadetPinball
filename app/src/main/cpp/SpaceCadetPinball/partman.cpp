@@ -10,7 +10,7 @@ short partman::_field_size[] =
                 2, -1, 2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0
         };
 
-DatFile *partman::load_records(LPCSTR lpFileName, bool fullTiltMode) {
+DatFile *partman::load_records(const char *lpFileName, bool fullTiltMode) {
     datFileHeader header{};
     dat8BitBmpHeader bmpHeader{};
     dat16BitBmpHeader zMapHeader{};

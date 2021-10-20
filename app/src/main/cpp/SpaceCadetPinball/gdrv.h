@@ -1,12 +1,13 @@
 #pragma once
 
+#include <SDL.h>
+
 enum class BitmapTypes : uint8_t {
     None = 0,
     RawBitmap = 1,
     DibBitmap = 2,
     Spliced = 3,
 };
-
 
 struct Rgba {
     uint8_t Blue;
@@ -52,7 +53,6 @@ struct gdrv_bitmap8 {
     SDL_Texture *Texture;
 };
 
-
 class gdrv {
 public:
     static int display_palette(ColorRgba *plt);
@@ -69,7 +69,7 @@ public:
                                gdrv_bitmap8 *srcBmp, int srcXOff, int srcYOff);
 
     static void
-    grtext_draw_ttext_in_box(LPCSTR text, int xOff, int yOff, int width, int height, int a6);
+    grtext_draw_ttext_in_box(const char *text, int xOff, int yOff, int width, int height, int a6);
 
     static void ApplyPalette(gdrv_bitmap8 &bmp);
 

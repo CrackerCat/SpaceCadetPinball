@@ -207,7 +207,7 @@ int DatFile::field_size(int groupIndex, FieldTypes targetEntryType) {
     return field_size_nth(groupIndex, targetEntryType, 0);
 }
 
-int DatFile::record_labeled(LPCSTR targetGroupName) {
+int DatFile::record_labeled(const char *targetGroupName) {
     auto targetLength = strlen(targetGroupName);
     for (int groupIndex = Groups.size() - 1; groupIndex >= 0; --groupIndex) {
         auto groupName = field(groupIndex, FieldTypes::GroupName);
@@ -225,7 +225,7 @@ int DatFile::record_labeled(LPCSTR targetGroupName) {
     return -1;
 }
 
-char *DatFile::field_labeled(LPCSTR lpString, FieldTypes fieldType) {
+char *DatFile::field_labeled(const char *lpString, FieldTypes fieldType) {
     auto groupIndex = record_labeled(lpString);
     return groupIndex < 0 ? nullptr : field(groupIndex, fieldType);
 }

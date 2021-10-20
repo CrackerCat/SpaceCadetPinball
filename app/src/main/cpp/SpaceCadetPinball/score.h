@@ -26,11 +26,11 @@ public:
 
     static int init();
 
-    static scoreStruct *create(LPCSTR fieldName, gdrv_bitmap8 *renderBgBmp);
+    static scoreStruct *create(const char *fieldName, gdrv_bitmap8 *renderBgBmp);
 
     static scoreStruct *dup(scoreStruct *score, int scoreIndex);
 
-    static void load_msg_font(LPCSTR lpName);
+    static void load_msg_font(const char *lpName);
 
     static void unload_msg_font();
 

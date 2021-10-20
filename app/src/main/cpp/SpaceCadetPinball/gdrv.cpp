@@ -74,24 +74,23 @@ gdrv_bitmap8::~gdrv_bitmap8() {
 }
 
 int gdrv::display_palette(ColorRgba *plt) {
-    const uint32_t sysPaletteColors[]
-            {
-                    0xff000000, // Color 0: transparent
-                    0xff000080,
-                    0xff008000,
-                    0xff008080,
-                    0xff800000,
-                    0xff800080,
-                    0xff808000,
-                    0xffC0C0C0,
-                    0xffC0DCC0,
-                    0xffF0CAA6
-            };
+    const uint32_t sysPaletteColors[]{
+            0xff000000, // Color 0: transparent
+            0xff000080,
+            0xff008000,
+            0xff008080,
+            0xff800000,
+            0xff800080,
+            0xff808000,
+            0xffC0C0C0,
+            0xffC0DCC0,
+            0xffF0CAA6
+    };
 
     memcpy(current_palette, sysPaletteColors, sizeof sysPaletteColors);
 
-    for (int i = 0; i < 256; i++) {
-        current_palette[i].rgba.Alpha = 0;
+    for (auto &i : current_palette) {
+        i.rgba.Alpha = 0;
     }
 
     auto pltSrc = &plt[10];
@@ -166,7 +165,8 @@ gdrv::copy_bitmap_w_transparency(gdrv_bitmap8 *dstBmp, int width, int height, in
 
 
 void
-gdrv::grtext_draw_ttext_in_box(LPCSTR text, int xOff, int yOff, int width, int height, int a6) {
+gdrv::grtext_draw_ttext_in_box(const char *text, int xOff, int yOff, int width, int height,
+                               int a6) {
 }
 
 void gdrv::ApplyPalette(gdrv_bitmap8 &bmp) {

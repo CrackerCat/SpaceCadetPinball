@@ -33,7 +33,7 @@ public:
 
     ~TPinballTable() override;
 
-    TPinballComponent *find_component(LPCSTR componentName);
+    TPinballComponent *find_component(const char *componentName);
 
     TPinballComponent *find_component(int groupIndex);
 

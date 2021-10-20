@@ -127,9 +127,9 @@ public:
 
     int field_size(int groupIndex, FieldTypes targetEntryType);
 
-    int record_labeled(LPCSTR targetGroupName);
+    int record_labeled(const char *targetGroupName);
 
-    char *field_labeled(LPCSTR lpString, FieldTypes fieldType);
+    char *field_labeled(const char *lpString, FieldTypes fieldType);
 
     gdrv_bitmap8 *GetBitmap(int groupIndex);
 

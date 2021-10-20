@@ -15,7 +15,7 @@ int score::init() {
     return 1;
 }
 
-scoreStruct *score::create(LPCSTR fieldName, gdrv_bitmap8 *renderBgBmp) {
+scoreStruct *score::create(const char *fieldName, gdrv_bitmap8 *renderBgBmp) {
     auto score = new scoreStruct();
     if (!score)
         return nullptr;
@@ -47,7 +47,7 @@ scoreStruct *score::dup(scoreStruct *score, int scoreIndex) {
     return new scoreStruct(*score);
 }
 
-void score::load_msg_font(LPCSTR lpName) {
+void score::load_msg_font(const char *lpName) {
     if (!pb::record_table)
         return;
 

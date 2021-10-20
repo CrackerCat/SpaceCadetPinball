@@ -3,7 +3,7 @@
 #include "winmain.h"
 
 // Todo: load translations from file
-std::map<uint32_t, LPCSTR> rc_strings
+std::map<uint32_t, const char *> rc_strings
         {
                 {0,    "Replay Awarded"},
                 {1,    "Ball Locked"},
@@ -205,7 +205,7 @@ std::map<uint32_t, LPCSTR> rc_strings
                 {2032, "Use Maximum Resolution (1024 x 768)"}
         };
 
-int LoadStringAlt(uint32_t uID, LPSTR lpBuffer, int cchBufferMax) {
+int LoadStringAlt(uint32_t uID, char *lpBuffer, int cchBufferMax) {
     auto str = rc_strings.find(uID);
     if (str == rc_strings.end()) {
         return 0;

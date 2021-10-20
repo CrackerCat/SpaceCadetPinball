@@ -86,7 +86,7 @@ int high_score::get_score_position(high_score_struct *table, int score) {
     return -1;
 }
 
-int high_score::place_new_score_into(high_score_struct *table, int score, LPSTR scoreStr,
+int high_score::place_new_score_into(high_score_struct *table, int score, char *scoreStr,
                                      int position) {
     if (position >= 0) {
         if (position <= 4) {
@@ -116,7 +116,7 @@ void high_score::show_high_score_dialog(high_score_struct *table) {
 }
 
 void high_score::show_and_set_high_score_dialog(high_score_struct *table, int score, int pos,
-                                                LPCSTR defaultName) {
+                                                const char *defaultName) {
     dlg_position = pos;
     dlg_score = score;
     dlg_hst = table;
@@ -126,7 +126,7 @@ void high_score::show_and_set_high_score_dialog(high_score_struct *table, int sc
 }
 
 void high_score::RenderHighScoreDialog() {
-    if (ShowDialog == true) {
+    if (ShowDialog) {
         ShowDialog = false;
         if (dlg_position == -1) {
             dlg_enter_name = 0;

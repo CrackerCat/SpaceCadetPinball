@@ -26,7 +26,7 @@ public class MainActivity extends SDLActivity {
         super.onCreate(savedInstanceState);
         File filesDir = getFilesDir();
         copyAssets(filesDir);
-        setDataPath(filesDir.getAbsolutePath() + "/");
+        initNative(filesDir.getAbsolutePath() + "/");
 
         View v = getLayoutInflater().inflate(R.layout.activity_main, mLayout, false);
 
@@ -104,9 +104,9 @@ public class MainActivity extends SDLActivity {
     protected String[] getLibraries() {
         return new String[] {
                 "SDL2",
-                "spacecadetpinball"
+                "SpaceCadetPinball"
         };
     }
 
-    private native void setDataPath(String dataPath);
+    private native void initNative(String dataPath);
 }

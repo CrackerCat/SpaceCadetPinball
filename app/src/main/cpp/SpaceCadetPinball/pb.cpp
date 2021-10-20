@@ -16,7 +16,6 @@
 #include "winmain.h"
 #include "Sound.h"
 #include "TBall.h"
-#include "TDemo.h"
 #include "TEdgeSegment.h"
 #include "TLightGroup.h"
 #include "TPlunger.h"
@@ -29,7 +28,7 @@
 
 TPinballTable *pb::MainTable = nullptr;
 DatFile *pb::record_table = nullptr;
-int pb::time_ticks = 0, pb::demo_mode = 0, pb::game_mode = 2, pb::mode_countdown_;
+int pb::time_ticks = 0, pb::game_mode = 2, pb::mode_countdown_;
 float pb::time_now = 0, pb::time_next = 0, pb::ball_speed_limit, pb::time_ticks_remainder = 0;
 high_score_struct pb::highscore_table[5];
 bool pb::FullTiltMode = false, pb::cheat_mode = false;
@@ -125,30 +124,12 @@ void pb::firsttime_setup() {
 void pb::mode_change(int mode) {
     switch (mode) {
         case 1:
-            if (demo_mode) {
-                winmain::LaunchBallEnabled = false;
-                winmain::HighScoresEnabled = false;
-                winmain::DemoActive = true;
-                if (MainTable) {
-                    if (MainTable->Demo)
-                        MainTable->Demo->ActiveFlag = 1;
-                }
-            } else {
-                winmain::LaunchBallEnabled = true;
-                winmain::HighScoresEnabled = true;
-                winmain::DemoActive = false;
-                if (MainTable) {
-                    if (MainTable->Demo)
-                        MainTable->Demo->ActiveFlag = 0;
-                }
-            }
+            winmain::LaunchBallEnabled = true;
+            winmain::HighScoresEnabled = true;
             break;
         case 2:
             winmain::LaunchBallEnabled = false;
-            if (!demo_mode) {
-                winmain::HighScoresEnabled = true;
-                winmain::DemoActive = false;
-            }
+            winmain::HighScoresEnabled = true;
             if (MainTable && MainTable->LightGroup)
                 MainTable->LightGroup->Message(29, 1.4f);
             break;
@@ -162,21 +143,7 @@ void pb::mode_change(int mode) {
     game_mode = mode;
 }
 
-void pb::toggle_demo() {
-    if (demo_mode) {
-        demo_mode = 0;
-        MainTable->Message(1024, 0.0);
-        mode_change(2);
-        pinball::MissTextBox->Clear();
-        auto text = pinball::get_rc_string(24, 0);
-        pinball::InfoTextBox->Display(text, -1.0);
-    } else {
-        replay_level(1);
-    }
-}
-
-void pb::replay_level(int demoMode) {
-    demo_mode = demoMode;
+void pb::replay_level() {
     mode_change(1);
     if (options::Options.Music)
         midi::play_pb_theme();
@@ -293,18 +260,16 @@ void pb::pause_continue() {
     } else {
         if (MainTable)
             MainTable->Message(1009, 0.0);
-        if (!demo_mode) {
-            char *text;
-            float textTime;
-            if (game_mode == 2) {
-                textTime = -1.0;
-                text = pinball::get_rc_string(24, 0);
-            } else {
-                textTime = 5.0;
-                text = pinball::get_rc_string(23, 0);
-            }
-            pinball::InfoTextBox->Display(text, textTime);
+        char *text;
+        float textTime;
+        if (game_mode == 2) {
+            textTime = -1.0;
+            text = pinball::get_rc_string(24, 0);
+        } else {
+            textTime = 5.0;
+            text = pinball::get_rc_string(23, 0);
         }
+        pinball::InfoTextBox->Display(text, textTime);
         if (options::Options.Music && !winmain::single_step)
             midi::play_pb_theme();
         Sound::Activate();
@@ -317,7 +282,7 @@ void pb::loose_focus() {
 }
 
 void pb::InputUp(GameInput input) {
-    if (game_mode != 1 || winmain::single_step || demo_mode)
+    if (game_mode != 1 || winmain::single_step)
         return;
 
     if (AnyBindingMatchesInput(options::Options.Key.LeftFlipper, input)) {
@@ -342,7 +307,7 @@ void pb::InputUp(GameInput input) {
 
 void pb::InputDown(GameInput input) {
     options::InputDown(input);
-    if (winmain::single_step || demo_mode)
+    if (winmain::single_step)
         return;
 
     if (game_mode != 1) {
@@ -420,7 +385,7 @@ void pb::InputDown(GameInput input) {
 }
 
 int pb::mode_countdown(int time) {
-    if (!game_mode || game_mode <= 0)
+    if (game_mode <= 0)
         return 1;
     if (game_mode > 2) {
         if (game_mode == 3) {
@@ -470,7 +435,7 @@ void pb::end_game() {
         }
     }
 
-    if (!demo_mode && !MainTable->CheatsUsed) {
+    if (!MainTable->CheatsUsed) {
         for (auto i = 0; i < playerCount; ++i) {
             int position = high_score::get_score_position(highscore_table, scores[i]);
             if (position >= 0) {
@@ -494,8 +459,6 @@ void pb::tilt_no_more() {
 }
 
 bool pb::chk_highscore() {
-    if (demo_mode)
-        return false;
     int playerIndex = MainTable->PlayerCount - 1;
     if (playerIndex < 0)
         return false;

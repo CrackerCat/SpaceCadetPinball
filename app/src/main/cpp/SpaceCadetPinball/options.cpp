@@ -133,29 +133,29 @@ void options::uninit() {
 }
 
 
-int options::get_int(LPCSTR lpValueName, int defaultValue) {
+int options::get_int(const char *lpValueName, int defaultValue) {
     auto value = GetSetting(lpValueName, std::to_string(defaultValue));
     return std::stoi(value);
 }
 
-void options::set_int(LPCSTR lpValueName, int data) {
+void options::set_int(const char *lpValueName, int data) {
     SetSetting(lpValueName, std::to_string(data));
 }
 
-std::string options::get_string(LPCSTR lpValueName, LPCSTR defaultValue) {
+std::string options::get_string(const char *lpValueName, const char *defaultValue) {
     return GetSetting(lpValueName, defaultValue);
 }
 
-void options::set_string(LPCSTR lpValueName, LPCSTR value) {
+void options::set_string(const char *lpValueName, const char *value) {
     SetSetting(lpValueName, value);
 }
 
-float options::get_float(LPCSTR lpValueName, float defaultValue) {
+float options::get_float(const char *lpValueName, float defaultValue) {
     auto value = GetSetting(lpValueName, std::to_string(defaultValue));
     return std::stof(value);
 }
 
-void options::set_float(LPCSTR lpValueName, float data) {
+void options::set_float(const char *lpValueName, float data) {
     SetSetting(lpValueName, std::to_string(data));
 }
 

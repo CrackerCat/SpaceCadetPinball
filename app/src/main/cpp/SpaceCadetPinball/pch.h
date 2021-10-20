@@ -43,9 +43,6 @@ constexpr int MIX_INIT_MID_Proxy =
 MIX_INIT_FLUIDSYNTH;
 #endif
 
-typedef char *LPSTR;
-typedef const char *LPCSTR;
-
 constexpr char PathSeparator =
 #ifdef _WIN32
         '\\';

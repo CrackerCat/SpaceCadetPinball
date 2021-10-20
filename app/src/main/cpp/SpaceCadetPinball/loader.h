@@ -89,7 +89,7 @@ public:
 
     static void loadfrom(DatFile *datFile);
 
-    static int query_handle(LPCSTR lpString);
+    static int query_handle(const char *lpString);
 
     static short query_visual_states(int groupIndex);
 

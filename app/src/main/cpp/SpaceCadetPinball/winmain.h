@@ -1,18 +1,7 @@
 #pragma once
 
 #include "gdrv.h"
-
-struct SdlTickClock {
-    using duration = std::chrono::milliseconds;
-    using rep = duration::rep;
-    using period = duration::period;
-    using time_point = std::chrono::time_point<SdlTickClock>;
-    static constexpr bool is_steady = true;
-
-    static time_point now() noexcept {
-        return time_point{duration{SDL_GetTicks()}};
-    }
-};
+#include "pch.h"
 
 struct SdlPerformanceClock {
     using duration = std::chrono::duration<uint64_t, std::nano>;
@@ -40,13 +29,11 @@ public:
     static int single_step;
     static SDL_Window *MainWindow;
     static SDL_Renderer *Renderer;
-//	static ImGuiIO* ImIO;
     static bool LaunchBallEnabled;
     static bool HighScoresEnabled;
-    static bool DemoActive;
     static char *BasePath;
 
-    static int WinMain(LPCSTR lpCmdLine);
+    static int WinMain(const char *lpCmdLine);
 
     static int event_handler(const SDL_Event *event);
 
@@ -74,9 +61,6 @@ private:
     static gdrv_bitmap8 *gfr_display;
     static std::string FpsDetails;
     static bool restart;
-    static bool ShowAboutDialog;
-    static bool ShowImGuiDemo;
-    static bool ShowSpriteViewer;
     static double UpdateToFrameRatio;
     static DurationMs TargetFrameTime;
     static struct optionsStruct &Options;

@@ -53,7 +53,7 @@ static_assert(sizeof(dat16BitBmpHeader) == 14, "Wrong size of zmap_header_type")
 
 class partman {
 public:
-    static class DatFile *load_records(LPCSTR lpFileName, bool fullTiltMode);
+    static class DatFile *load_records(const char *lpFileName, bool fullTiltMode);
 
 private:
     static short _field_size[];

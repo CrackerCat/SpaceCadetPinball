@@ -81,8 +81,8 @@ TEdgeSegment::install_wall(float *floatArr, TCollisionComponent *collComp, char 
                     vec2.X = centerX2 - centerX1;
                     vec2.Y = centerY2 - center.Y;
                     maths::cross(&vec1, &vec2, &dstVec);
-                    if (dstVec.Z > 0.0f && offset > 0.0f ||
-                        dstVec.Z < 0.0f && offset < 0.0f) {
+                    if ((dstVec.Z > 0.0f && offset > 0.0f) ||
+                        (dstVec.Z < 0.0f && offset < 0.0f)) {
                         float radius = offset * 1.001f;
                         auto circle = new TCircle(collComp, activeFlagPtr, collisionGroup, &center,
                                                   radius);

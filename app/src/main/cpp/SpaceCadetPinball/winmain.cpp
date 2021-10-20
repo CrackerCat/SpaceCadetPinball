@@ -30,19 +30,15 @@ bool winmain::restart = false;
 
 gdrv_bitmap8 *winmain::gfr_display = nullptr;
 std::string winmain::DatFileName;
-bool winmain::ShowAboutDialog = false;
-bool winmain::ShowImGuiDemo = false;
-bool winmain::ShowSpriteViewer = false;
 bool winmain::LaunchBallEnabled = true;
 bool winmain::HighScoresEnabled = true;
-bool winmain::DemoActive = false;
 char *winmain::BasePath;
 std::string winmain::FpsDetails;
 double winmain::UpdateToFrameRatio;
 winmain::DurationMs winmain::TargetFrameTime;
 optionsStruct &winmain::Options = options::Options;
 
-int winmain::WinMain(LPCSTR lpCmdLine) {
+int winmain::WinMain(const char *lpCmdLine) {
     restart = false;
     bQuit = false;
 
@@ -142,10 +138,7 @@ int winmain::WinMain(LPCSTR lpCmdLine) {
     SDL_ShowWindow(window);
     fullscrn::set_screen_mode(Options.FullScreen);
 
-    if (strstr(lpCmdLine, "-demo"))
-        pb::toggle_demo();
-    else
-        pb::replay_level(0);
+    pb::replay_level();
 
     unsigned dtHistoryCounter = 300u, updateCounter = 0, frameCounter = 0;
 
@@ -808,7 +801,7 @@ void winmain::end_pause() {
 
 void winmain::new_game() {
     end_pause();
-    pb::replay_level(0);
+    pb::replay_level();
 }
 
 void winmain::pause() {

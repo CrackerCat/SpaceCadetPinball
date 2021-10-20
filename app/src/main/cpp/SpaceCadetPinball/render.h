@@ -64,8 +64,6 @@ public:
 
     static void build_occlude_list();
 
-    static void SpriteViewer(bool *show);
-
     static void PresentVScreen();
 
 private:

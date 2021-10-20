@@ -54,7 +54,7 @@ public:
 
     static void toggle_demo();
 
-    static void replay_level(int demoMode);
+    static void replay_level();
 
     static void ballset(float dx, float dy);
 
@@ -89,7 +89,7 @@ public:
     static void PushCheat(const std::string &cheat);
 
 private:
-    static int demo_mode, mode_countdown_;
+    static int mode_countdown_;
 
     static bool AnyBindingMatchesInput(GameInput (&options)[3], GameInput key);
 };
